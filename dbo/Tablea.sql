@@ -9,6 +9,9 @@ CREATE TABLE [dbo].[Tablea] (
 GO
 
 INSERT INTO Tablea (col1, colb, colc) values (1, '', 'abc');
+
+GO
+
 INSERT INTO Tablea (col1, colb, colc) values (2, '', 'bcd');
 
 
