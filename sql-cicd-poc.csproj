@@ -1,5 +1,7 @@
 <Project Sdk="MSBuild.Sdk.SqlProj/2.6.1">
     <PropertyGroup>
+		<TargetDatabaseName>bank</TargetDatabaseName>
+		<TargetConnectionString>Data Source=EC2AMAZ-DC3KDV1;Initial Catalog=bank;User ID=sqldemopoc;Password=sqldemo1234@#;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Command Timeout=30</TargetConnectionString>
         <TargetFramework>netstandard2.0</TargetFramework>
         <SqlServerVersion>Sql160</SqlServerVersion>
         <!-- For additional properties that can be set here, please refer to https://github.com/rr-wfm/MSBuild.Sdk.SqlProj#model-properties -->
