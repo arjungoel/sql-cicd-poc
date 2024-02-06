@@ -1,0 +1,104 @@
+name: CI/CD pipeline for MSSQL Server using GitHub Actions and deploy .dacpac to the target server.
+
+on:
+  push:
+    branches: [ main ]
+env:
+  AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+  SOURCE_FILE_PATH: ${{ vars.SOURCE_FILE_PATH }}
+  SQL_SERVER_CONNECTION_STRING: ${{ secrets.SQL_SERVER_CONNECTION_STRING }}
+  BUILD_PATH: ${{ vars.BUILD_PATH }}
+
+jobs:
+  BuildDacpac:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code repository
+        uses: actions/checkout@v3.3.0
+      
+      - name: Set up .NET core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: True
+
+      - name: Print dotnet core version
+        run: dotnet --version
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Database project
+        run: dotnet build --configuration Release /p:NetCoreBuild=true
+      
+      - name: Publish Database project for development purposes
+        run: dotnet publish /t:publish sql-cicd-poc.csproj --configuration Release
+
+      - name: Zip the deployment package
+        shell: powershell
+        run: Compress-Archive -Path "${{ env.BUILD_PATH }}\" -DestinationPath "${{ env.BUILD_PATH }}\sql-server-db.zip"
+      
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+           
+      - name: Publish the artifacts to S3
+        shell: cmd
+        run: |
+          aws s3 cp ${{ env.BUILD_PATH }}\sql-server-db.zip s3://${{ env.AWS_BUCKET_NAME }}/sql-cicd-poc/
+
+# Deploy dacpac job
+  # DeployDacpacToTargetServer:
+  #   needs: BuildDacpac
+  #   runs-on: [ self-hosted, Windows, X64, db-cicd-demo ]
+  #   steps:  
+  #     - name: Set AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ secrets.AWS_REGION }}
+      
+  #     - name: To print the deploy job server IP
+  #       shell: powershell
+  #       run: |
+  #         $privateIp = $null
+  #         $publicIp = $null
+  #         if ($privateIp -eq $null) {
+  #           try {
+  #               $privateIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/local-ipv4" -ErrorAction Stop
+  #               echo "The deploy job server IP (private) is $privateIp"
+  #           } catch {
+  #               echo "Unable to retrieve private IP address."
+  #           }
+  #         } elseif ($publicIp -eq $null) {
+  #             try {
+  #                 $publicIp = Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/public-ipv4" -ErrorAction Stop
+  #                 echo "The deploy job server IP (public) is $publicIp"
+  #             } catch {
+  #                 echo "Unable to retrieve public IP address."
+  #             }
+  #         } else {
+  #             echo "Unable to retrieve either private or public IP address."
+  #         }
+        
+  #     - name: Download the zip file from S3 to EC2 folder
+  #       shell: powershell
+  #       run: |
+  #         C:\"Program Files"\Amazon\AWSCLIV2\aws s3 cp s3://${{ env.AWS_BUCKET_NAME }}/sql-server-cicd/sql-server-db.zip "C:\db-cicd-demo\db-cicd-demo\"
+      
+  #     - name: Unzipping the Zip file
+  #       shell: powershell
+  #       run: Expand-Archive -Path "C:\db-cicd-demo\db-cicd-demo\sql-server-db.zip" -DestinationPath "C:\db-cicd-demo\db-cicd-demo\sql-server-cicd-db" -Force
+      
+  #     - name: get sqlpackage version
+  #       working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
+  #       run: ./SqlPackage /version
+      
+  #     - name: Deploy .dacpac to Target Server for creating migrations
+  #       shell: powershell
+  #       run: |
+  #         & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"${{ env.SOURCE_FILE_PATH }}" /TargetConnectionString:"${{ env.SQL_SERVER_CONNECTION_STRING }}"      
