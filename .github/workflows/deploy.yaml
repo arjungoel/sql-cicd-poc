@@ -29,10 +29,12 @@ jobs:
         run: dotnet restore
 
       - name: Build Database project
-        run: dotnet build --configuration Release /p:NetCoreBuild=true
+        run: dotnet build
+  # --configuration Release /p:NetCoreBuild=true
       
       - name: Publish Database project for development purposes
-        run: dotnet publish /t:publish sql-cicd-poc.csproj --configuration Release
+        run: dotnet publish 
+#/t:publish sql-cicd-poc.csproj --configuration Release
 
       - name: Zip the deployment package
         shell: powershell
