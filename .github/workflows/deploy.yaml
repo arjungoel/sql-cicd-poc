@@ -98,7 +98,7 @@ jobs:
         working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
         run: ./SqlPackage /version
       
-      # - name: Deploy .dacpac to Target Server for creating migrations
-      #   shell: powershell
-      #   run: |
-      #     & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"${{ env.SOURCE_FILE_PATH }}" /TargetConnectionString:"${{ env.SQL_SERVER_CONNECTION_STRING }}"      
+      - name: Deploy .dacpac to Target Server for creating migrations
+        shell: powershell
+        run: |
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"${{ env.SOURCE_FILE_PATH }}" /TargetConnectionString:"${{ env.SQL_SERVER_CONNECTION_STRING }}"      
