@@ -5,3 +5,9 @@ CREATE TABLE [dbo].[Customer]
 [Address] [nvarchar] (200) NOT NULL,
 [CreateDate] [datetime] NOT NULL
 ) ON [PRIMARY]
+
+GO
+
+INSERT INTO TABLE [dbo].[Customer] values (1, 'Arjun', 'Sonipat', '2024-02-07')
+
+GO
