@@ -1,4 +1,4 @@
-name: CI/CD pipeline for MSSQL Server using GitHub Actions and deploy .dacpac to the target server.
+name: CI/CD pipeline for MSSQL Server using GitHub Actions and deploy build file (.dacpac) to the target server.
 
 on:
   push:

@@ -1,0 +1,10 @@
+# downloaded
+# built
+bin
+obj
+# temp
+# user-specific
+Properties
+*.user
+.vs
+# secrets
