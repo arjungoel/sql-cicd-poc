@@ -1,6 +1,5 @@
 CREATE TABLE [dbo].[Customer]
 (
-    [Id] [int] NOT NULL IDENTITY(1, 1),
     [Name] [nvarchar](50) NOT NULL,
     [Address] [nvarchar](200) NOT NULL,
     [CreateDate] [datetime] NOT NULL
@@ -8,10 +7,14 @@ CREATE TABLE [dbo].[Customer]
 
 GO
 
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES (1, 'Arjun', 'Sonipat', '2024-02-07')
+INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07')
 
 GO
 
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES (2, 'Aman', 'Sonipat', '2024-02-07')
+INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Aman', 'Sonipat', '2024-02-07')
+
+GO
+
+INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Harsh', 'Chennai', '2024-02-07')
 
 GO
