@@ -1,8 +1,4 @@
-Use bank;
-
-GO
-
-CREATE TABLE [bank].[Customer]
+CREATE TABLE [Customer]
 (
     [Name] [nvarchar](50) NOT NULL,
     [Address] [nvarchar](200) NOT NULL,
@@ -11,6 +7,6 @@ CREATE TABLE [bank].[Customer]
 
 GO
 
-INSERT INTO [bank].[Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07 00:00:00')
+INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07 00:00:00')
 
 GO
