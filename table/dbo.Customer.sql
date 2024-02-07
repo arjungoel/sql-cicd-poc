@@ -7,14 +7,8 @@ CREATE TABLE [Customer]
 
 GO
 
+BEGIN TRANSACTION
 INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07')
-
-GO
-
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Aman', 'Sonipat', '2024-02-07')
-
-GO
-
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Harsh', 'Chennai', '2024-02-07')
+COMMIT TRANSACTION
 
 GO
