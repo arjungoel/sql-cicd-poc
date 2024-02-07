@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[Customer]
+CREATE TABLE [Customer]
 (
     [Name] [nvarchar](50) NOT NULL,
     [Address] [nvarchar](200) NOT NULL,
