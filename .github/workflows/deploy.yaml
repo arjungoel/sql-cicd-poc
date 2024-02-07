@@ -29,7 +29,8 @@ jobs:
         run: dotnet restore
 
       - name: Build Database project
-        run:  SqlPackage /Action:Export /TargetFile:"C:\output.bacpac" /SourceConnectionString:"Server=tcp:EC2AMAZ-DC3KDV1,1433;Initial Catalog=bank;Persist Security Info=False;User ID=sqldemopoc;Password=sqldemo1234@#;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
+        run: | 
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Export /TargetFile:"C:\output.bacpac" /SourceConnectionString:"Server=tcp:EC2AMAZ-DC3KDV1,1433;Initial Catalog=bank;Persist Security Info=False;User ID=sqldemopoc;Password=sqldemo1234@#;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
       
       # - name: Publish Database project for development purposes
       #   run: dotnet publish /t:publish sql-cicd-poc.csproj --configuration Release
