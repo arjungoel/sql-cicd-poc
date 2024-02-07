@@ -8,6 +8,10 @@ CREATE TABLE [dbo].[Customer]
 
 GO
 
-INSERT INTO [bank].[Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07')
+INSERT INTO [bank].[Customer] ([Name], [Address], [CreateDate]) VALUES (1, 'Arjun', 'Sonipat', '2024-02-07')
+
+GO
+
+INSERT INTO [bank].[Customer] ([Name], [Address], [CreateDate]) VALUES (2, 'Aman', 'Sonipat', '2024-02-07')
 
 GO
