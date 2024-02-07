@@ -8,7 +8,13 @@ CREATE TABLE [Customer]
 GO
 
 BEGIN TRANSACTION
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07')
+
+GO
+
+INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07 00:00:00')
+
+GO
+
 COMMIT TRANSACTION
 
 GO
