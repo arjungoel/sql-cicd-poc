@@ -7,4 +7,6 @@ CREATE TABLE [dbo].[Bank]
 
 GO
 
+Insert into Bank Values ('sbi2', 'naraina2', 'ifsc_code2');
+
 GO
