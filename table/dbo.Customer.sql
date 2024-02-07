@@ -8,6 +8,5 @@ CREATE TABLE [Customer]
 GO
 
 INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Arjun', 'Sonipat', '2024-02-07 00:00:00')
-INSERT INTO [Customer] ([Name], [Address], [CreateDate]) VALUES ('Harsh', 'Chennai', '2024-02-07 00:00:00')
 
 GO
