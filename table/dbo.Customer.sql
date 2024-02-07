@@ -1,5 +1,7 @@
 Use bank;
 
+GO
+
 CREATE TABLE [bank].[Customer]
 (
     [Name] [nvarchar](50) NOT NULL,
