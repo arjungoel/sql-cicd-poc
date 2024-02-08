@@ -7,6 +7,6 @@ CREATE TABLE [dbo].[Bank]
 
 GO
 
-Insert into Bank Values ('sbi2', 'naraina2', 'ifsc_code2');
+Insert into Bank Values ('SBI', 'Naraina', 'IFSC1234'), ('CitiBank', 'Naraina', 'IFSC5678'), ('HDFC', 'Sonipat', 'IFSC9012');
 
 GO
