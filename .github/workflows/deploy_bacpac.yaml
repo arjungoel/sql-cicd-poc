@@ -33,9 +33,9 @@ jobs:
       - name: Create the schema of a database in a DACPAC file (.dapac)
         shell: powershell
         run: |
-          SqlPackage /Action:Extract /TargetFile:result.dacpac /p:ExtractAllTableData=true /p:VerifyExtraction=true /SourceServerName:EC2AMAZ-DC3KDV1 /SourceDatabaseName:bank /SourceUser:sqldemopoc /SourcePassword:sqldemo1234@# /sec:false
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Extract /TargetFile:result.dacpac /p:ExtractAllTableData=true /p:VerifyExtraction=true /SourceServerName:EC2AMAZ-DC3KDV1 /SourceDatabaseName:bank /SourceUser:sqldemopoc /SourcePassword:sqldemo1234@# /sec:false
       
       - name: Deploy .dacpac to Target Server 
         shell: powershell
         run: |
-          SqlPackage /Action:Publish /SourceFile:"C:\database-projects\sql-cicd-poc\result.dacpac" /TargetConnectionString:"Server=tcp:EC2AMAZ-DC3KDV1,1433;Initial Catalog=bank;Persist Security Info=False;User ID=arjunsql;Password=arjun1234@#;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
+          & "C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"C:\database-projects\sql-cicd-poc\result.dacpac" /TargetConnectionString:"Server=tcp:EC2AMAZ-DC3KDV1,1433;Initial Catalog=bank;Persist Security Info=False;User ID=arjunsql;Password=arjun1234@#;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
