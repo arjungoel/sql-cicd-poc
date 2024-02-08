@@ -1,0 +1,41 @@
+name: CI/CD pipeline for MSSQL Server using GitHub Actions and deploy build file (.dacpac) after extracting it from .bacpac file to the target server.
+
+on:
+  push:
+    branches: [ main ]
+env:
+  AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+  # SOURCE_FILE_PATH: ${{ vars.SOURCE_FILE_PATH }}
+  # SQL_SERVER_CONNECTION_STRING: ${{ secrets.SQL_SERVER_CONNECTION_STRING }}
+  # BUILD_PATH: ${{ vars.BUILD_PATH }}
+
+jobs:
+# Deploy bacpac job
+  DeployBacpacToTargetServer:
+    runs-on: [ self-hosted, Windows, X64, sql-cicd-poc ]
+    steps:  
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+        
+      - name: Download the .bacpac file from S3 to EC2 server folder
+        shell: powershell
+        run: |
+          C:\"Program Files"\Amazon\AWSCLIV2\aws s3 cp s3://${{ env.AWS_BUCKET_NAME }}/sql-cicd-poc/sql-cicd-poc.bacpac "C:\sql-cicd-poc\sql-cicd-poc\"
+                                                
+      - name: get sqlpackage version
+        working-directory: C:\Program Files\Microsoft SQL Server\160\DAC\bin\
+        run: ./SqlPackage /version
+      
+      - name: Create the schema of a database in a DACPAC file (.dapac)
+        shell: powershell
+        run: |
+          SqlPackage /Action:Extract /TargetFile:result.dacpac /p:ExtractAllTableData=true /p:VerifyExtraction=true /SourceServerName:EC2AMAZ-DC3KDV1 /SourceDatabaseName:bank /SourceUser:sqldemopoc /SourcePassword:sqldemo1234@# /sec:false
+      
+      - name: Deploy .dacpac to Target Server 
+        shell: powershell
+        run: |
+          SqlPackage /Action:Publish /SourceFile:"C:\database-projects\sql-cicd-poc\result.dacpac" /TargetConnectionString:"Server=tcp:EC2AMAZ-DC3KDV1,1433;Initial Catalog=bank;Persist Security Info=False;User ID=arjunsql;Password=arjun1234@#;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"

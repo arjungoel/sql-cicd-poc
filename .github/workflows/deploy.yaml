@@ -2,7 +2,7 @@ name: CI/CD pipeline for MSSQL Server using GitHub Actions and deploy build file
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main_disabled ]
 env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
   SOURCE_FILE_PATH: ${{ vars.SOURCE_FILE_PATH }}
