@@ -9,11 +9,18 @@ env:
   # SQL_SERVER_CONNECTION_STRING: ${{ secrets.SQL_SERVER_CONNECTION_STRING }}
   # BUILD_PATH: ${{ vars.BUILD_PATH }}
 
-jobs:
+jobs:   
 # Deploy bacpac job
   DeployBacpacToTargetServer:
     runs-on: [ self-hosted, Windows, X64, sql-cicd-poc ]
     steps:  
+      - name: Checkout code repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Execute changes to database
+        shell: powershell
+        run: $sqlResult = Invoke-Sqlcmd -InputFile "C:\database-projects\sql-cicd-poc\table\BankInfo.sql" -ServerInstance "EC2AMAZ-DC3KDV1" -Database "bank" -Username "sqldemopoc" -Password "sqldemo1234@#" -QueryTimeout 36000
+
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
